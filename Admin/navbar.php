@@ -59,6 +59,10 @@
     -o-box-shadow: 0 5px 15px rgba(0,0,0,0);
     box-shadow: 0 5px 15px rgba(0,0,0,0);
   }
+
+  .form-control:not([type="email"]):not([type="password"]) {
+    text-transform: capitalize;
+  }
 </style>
 </head>
 <!-- LIGHT MODE -->
@@ -85,9 +89,9 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="dashboard.php" class="nav-link">Home</a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+     <!--  <li class="nav-item d-none d-sm-inline-block">
         <a href="contact-us.php" class="nav-link">Contact</a>
-      </li>
+      </li> -->
     </ul>
 
 <?php 
@@ -299,15 +303,15 @@
     <!-- Brand Logo -->
     <a href="dashboard.php" class="brand-link text-center">
       <div class="d-flex m-1 justify-content-center">
-        <img src="../images/web_logo2.png" alt="BMS Logo" class="brand-image">
+        <img src="../images/logo.png" alt="BMS Logo" class="img-fluid" width="70">
       </div>
       <!-- <span class="brand-text font-weight-light ml-1">BMS</span> -->
-      <span class="text-sm  font-weight-light mt-2">Pasay City - Brgy. 193</span>
+      <span class="text-xs  font-weight-light mt-2">Barangay, Kauran,Ampatuan <br> Maguindanao Del Sur</span>
     </a>
 
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar mt-2">
 
       <!-- Sidebar user panel (optional) -->
       <!-- <div class="user-panel mt-4 pb-2 pt-3 mb-3 d-flex">
@@ -342,32 +346,71 @@
 
           
        
-          <li class="nav-item">
-            <a href="dashboard.php" class="nav-link"><i class="fa-solid fa-gauge"></i><p>&nbsp;&nbsp; Dashboard</p></a>
+          <li class="nav-item" style="margin-top: 90px;">
+            <a href="dashboard.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'dashboard.php') ? 'active' : ''; ?>"><i class="fa-solid fa-gauge"></i><p>&nbsp;&nbsp; Dashboard</p></a>
           </li>
           <li class="nav-item">
-            <a href="resident.php" class="nav-link"> <i class="fa-solid fa-user-group"></i><p>&nbsp; Residence</p></a>
+            <a href="resident.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'resident.php' || basename($_SERVER['PHP_SELF']) == 'resident_add.php' || basename($_SERVER['PHP_SELF']) == 'resident_update.php' || basename($_SERVER['PHP_SELF']) == 'resident_view.php' || basename($_SERVER['PHP_SELF']) == 'resident_document.php') ? 'active' : ''; ?>"> <i class="fa-solid fa-user-group"></i><p>&nbsp; Residence</p></a>
           </li>
           <li class="nav-item">
-            <a href="documents.php" class="nav-link"><i class="fa-solid fa-file"></i><p>&nbsp;&nbsp;&nbsp;  Documents</p></a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link"><i class="fa-solid fa-sack-dollar"></i><p>&nbsp;&nbsp; Brgy Income<i class="right fas fa-angle-left"></i></p></a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-               <a href="brgyIncome.php" class="nav-link"><i class="fa-solid fa-sack-dollar"></i><p>&nbsp;&nbsp; Income report</p></a>
-              </li>
-              <li class="nav-item">
-               <a href="documentsIncome.php" class="nav-link"><i class="fa-solid fa-sack-dollar"></i><p>&nbsp;&nbsp; Documents income</p></a>
-              </li>
-              <li class="nav-item">
-               <a href="brgyIncome_list.php" class="nav-link"><i class="fa-solid fa-sack-dollar"></i><p>&nbsp;&nbsp; Add income  </p></a>
-              </li>
-            </ul>
+            <a href="documents.php" class="nav-link 
+            <?php echo (
+              basename($_SERVER['PHP_SELF']) == 'documents.php' || 
+              basename($_SERVER['PHP_SELF']) == 'documents_requirements.php' || 
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyClearance.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyConstruction.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyID.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyIndigency.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyJobseeker.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyNon-Residency.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyOwnership.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyPermit.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyPlate.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyResidency.php'
+              ) ? 'active' : ''; ?>"><i class="fa-solid fa-file"></i><p>&nbsp;&nbsp;&nbsp;  Documents</p></a>
           </li>
 
           <li class="nav-item">
-            <a href="officials.php" class="nav-link"><i class="fa-solid fa-users"></i><p>&nbsp; Brgy. Profiles</p></a>
+          <a href="#" class="nav-link
+            <?php
+            echo (
+            basename($_SERVER['PHP_SELF']) == 'brgyIncome.php' ||
+            basename($_SERVER['PHP_SELF']) == 'documentsIncome.php' ||
+            basename($_SERVER['PHP_SELF']) == 'brgyIncome_list.php' ||
+            basename($_SERVER['PHP_SELF']) == 'brgyIncome_Add.php' 
+            ) ? 'active' : '';
+            ?>
+            ">
+            <i class="fa-solid fa-sack-dollar"></i><p>&nbsp;&nbsp; Brgy Income<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview"
+            <?php
+            echo (
+            basename($_SERVER['PHP_SELF']) == 'brgyIncome.php' ||
+            basename($_SERVER['PHP_SELF']) == 'documentsIncome.php' ||
+            basename($_SERVER['PHP_SELF']) == 'brgyIncome_list.php' ||
+            basename($_SERVER['PHP_SELF']) == 'brgyIncome_Add.php' 
+            ) ? 'style="display: block;"' : '';
+            ?>
+            >
+            <li class="nav-item">
+               <a href="brgyIncome.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'brgyIncome.php') ? 'active' : ''; ?>"><i class="fa-solid fa-sack-dollar"></i><p>&nbsp;&nbsp; Income report</p></a>
+              </li>
+              <li class="nav-item">
+               <a href="documentsIncome.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'documentsIncome.php') ? 'active' : ''; ?>"><i class="fa-solid fa-sack-dollar"></i><p>&nbsp;&nbsp; Documents income</p></a>
+              </li>
+              <li class="nav-item">
+               <a href="brgyIncome_list.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'brgyIncome_list.php' || basename($_SERVER['PHP_SELF']) == 'brgyIncome_Add.php') ? 'active' : ''; ?>"><i class="fa-solid fa-sack-dollar"></i><p>&nbsp;&nbsp; Add income  </p></a>
+              </li>
+          </ul>
+        </li>
+
+          <li class="nav-item">
+            <a href="blotter.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'blotter.php' || basename($_SERVER['PHP_SELF']) == 'blotter_add.php' || basename($_SERVER['PHP_SELF']) == 'blotter_update.php' || basename($_SERVER['PHP_SELF']) == 'blotter_view.php') ? 'active' : ''; ?>"><i class="fas fa-book"></i><p>&nbsp;&nbsp; Blotter</p></a>
+          </li>
+
+          <li class="nav-item">
+            <a href="officials.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'officials.php') ? 'active' : ''; ?>"><i class="fa-solid fa-users"></i><p>&nbsp; Brgy. Profiles</p></a>
           </li>
 
          <!--  <li class="nav-item">
@@ -386,10 +429,10 @@
           </li> -->
           
           <li class="nav-item">
-            <a href="users.php" class="nav-link"><i class="fa-solid fa-user-secret"></i><p>&nbsp;&nbsp; Accounts</p></a>
+            <a href="users.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'users.php') ? 'active' : ''; ?>"><i class="fa-solid fa-user-secret"></i><p>&nbsp;&nbsp; Accounts</p></a>
           </li>
           <li class="nav-item">
-            <a href="customize.php" class="nav-link"><i class="fa-solid fa-palette"></i><p>&nbsp;&nbsp; Customize</p></a>
+            <a href="customize.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'customize.php') ? 'active' : ''; ?>"><i class="fa-solid fa-palette"></i><p>&nbsp;&nbsp; Customize</p></a>
           </li>
 
         </ul>

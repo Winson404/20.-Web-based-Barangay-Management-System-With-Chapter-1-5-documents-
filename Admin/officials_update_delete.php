@@ -12,7 +12,7 @@
           <img src="../images-signature/<?php echo $row['digital_signature']; ?>" alt="" width="200" class="shadow-sm">
       </div>
       <div class="modal-footer alert-light d-flex justify-content-center">
-        <a href="../images-signature/<?php echo $row['image']; ?>" type="button" class="btn bg-gradient-primary" download><i class="fa-solid fa-download"></i> Download</a>
+        <a href="../images-signature/<?php echo $row['digital_signature']; ?>" type="button" class="btn bg-gradient-primary" download><i class="fa-solid fa-download"></i> Download</a>
       </div>
     </div>
   </div>

@@ -166,7 +166,7 @@
                                   <h6><?php echo $row['region']; ?></h6>
                                 </div>
                             </div>
-                              </div>
+                          </div>
                       </div>
                       <div class="col-lg-3 col-md-6 col-12 text-dark">
                         <div class=" d-flex justify-content-center bg-dark d-block m-auto" style="max-height: 120px; min-height: 120px; width: 120px; border: 3px solid darkgray;">

@@ -881,186 +881,195 @@
 		$description     = mysqli_real_escape_string($conn, $_POST['description']);
 		$file            = basename($_FILES["fileToUpload"]["name"]);
 
-		$fetch = mysqli_query($conn, "SELECT * FROM officials WHERE officialID='$officialID' ");
-		$row = mysqli_fetch_array($fetch);
-
-		if(empty($file)) {
-
-			if($row['firstname'] == $firstname && $row['middlename'] == $middlename && $row['lastname'] == $lastname && $row['suffix'] == $suffix && $row['position'] == $position) {
-					$update = mysqli_query($conn, "UPDATE officials SET firstname='$firstname', middlename='$middlename', lastname='$lastname', suffix='$suffix', position='$position', description='$description' WHERE officialID='$officialID' ");
-					if($update) {
-		            	$_SESSION['message'] = "Barangay Official has been updated!";
-			            $_SESSION['text'] = "Updated successfully!";
-				        $_SESSION['status'] = "success";
-						header("Location: officials.php");
-		            } else {
-			            $_SESSION['message'] = "Something went wrong while updating the information.";
-			            $_SESSION['text'] = "Please try again.";
-				        $_SESSION['status'] = "error";
-						header("Location: officials.php");
-		            }
-			} else {
-				$check = mysqli_query($conn, "SELECT * FROM officials WHERE firstname='$firstname' AND middlename='$middlename' AND lastname='$lastname' AND suffix='$suffix' AND position='$position' ");
-				if(mysqli_num_rows($check)>0) {
-			      $_SESSION['message'] = "This person is already added as an official.";
-			      $_SESSION['text'] = "Please try again.";
-			      $_SESSION['status'] = "error";
-				  header("Location: officials.php");
-				} else {
-					$update = mysqli_query($conn, "UPDATE officials SET firstname='$firstname', middlename='$middlename', lastname='$lastname', suffix='$suffix', position='$position', description='$description' WHERE officialID='$officialID' ");
-					if($update) {
-		            	$_SESSION['message'] = "Barangay Official has been updated!";
-			            $_SESSION['text'] = "Updated successfully!";
-				        $_SESSION['status'] = "success";
-						header("Location: officials.php");
-		            } else {
-			            $_SESSION['message'] = "Something went wrong while updating the information.";
-			            $_SESSION['text'] = "Please try again.";
-				        $_SESSION['status'] = "error";
-						header("Location: officials.php");
-		            }
-				}
-
-			}
-
+		$cap = mysqli_query($conn, "SELECT * FROM officials WHERE position='Barangay Captain' AND officialID!='$officialID'");
+		if(mysqli_num_rows($cap) > 0) {
+		  $_SESSION['message'] = "Barangay Captain position already exists.";
+	      $_SESSION['text'] = "Please try again.";
+	      $_SESSION['status'] = "error";
+		  header("Location: officials.php");
 		} else {
 
-			if($row['firstname'] == $firstname && $row['middlename'] == $middlename && $row['lastname'] == $lastname && $row['suffix'] == $suffix && $row['position'] == $position) {
-					// Check if image file is a actual image or fake image
-				    $sign_target_dir = "../images-signature/";
-				    $sign_target_file = $sign_target_dir . basename($_FILES["fileToUpload"]["name"]);
-				    $sign_uploadOk = 1;
-				    $sign_imageFileType = strtolower(pathinfo($sign_target_file,PATHINFO_EXTENSION));
+			$fetch = mysqli_query($conn, "SELECT * FROM officials WHERE officialID='$officialID' ");
+			$row = mysqli_fetch_array($fetch);
 
-				    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-					if($check == false) {
-					    $_SESSION['message']  = "Signature file is not an image.";
-					    $_SESSION['text'] = "Please try again.";
-					    $_SESSION['status'] = "error";
-						header("Location: officials.php");
-				    	$uploadOk = 0;
-				    } 
+			if(empty($file)) {
 
-					// Check file size // 500KB max size
-					elseif ($_FILES["fileToUpload"]["size"] > 500000) {
-					  	$_SESSION['message']  = "File must be up to 500KB in size.";
-					    $_SESSION['text'] = "Please try again.";
-					    $_SESSION['status'] = "error";
-						header("Location: officials.php");
-				    	$uploadOk = 0;
-					}
-
-				    // Allow certain file formats
-				    elseif($sign_imageFileType != "jpg" && $sign_imageFileType != "png" && $sign_imageFileType != "jpeg" && $sign_imageFileType != "gif" ) {
-					    $_SESSION['message'] = "Only JPG, JPEG, PNG & GIF files are allowed.";
-					    $_SESSION['text'] = "Please try again.";
-					    $_SESSION['status'] = "error";
-						header("Location: officials.php");
-					    $sign_uploadOk = 0;
-				    }
-
-				    // Check if $sign_uploadOk is set to 0 by an error
-				    elseif ($sign_uploadOk == 0) {
-					    $_SESSION['message'] = "Your file was not uploaded.";
-					    $_SESSION['text'] = "Please try again.";
-					    $_SESSION['status'] = "error";
-						header("Location: officials.php");
-
-				    // if everything is ok, try to upload file
-				    } else {
-
-			    		if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $sign_target_file)) {
-		    				$update = mysqli_query($conn, "UPDATE officials SET firstname='$firstname', middlename='$middlename', lastname='$lastname', suffix='$suffix', position='$position', description='$description', digital_signature='$file' WHERE officialID='$officialID' ");
-							if($update) {
-				            	$_SESSION['message'] = "Barangay Official has been updated!";
-					            $_SESSION['text'] = "Updated successfully!";
-						        $_SESSION['status'] = "success";
-								header("Location: officials.php");
-				            } else {
-					            $_SESSION['message'] = "Something went wrong while updating the information.";
-					            $_SESSION['text'] = "Please try again.";
-						        $_SESSION['status'] = "error";
-								header("Location: officials.php");
-				            }  	
-			    		} else {
-		    				$_SESSION['message'] = "There was an error uploading your digital signature.";
-			            	$_SESSION['text'] = "Please try again.";
+				if($row['firstname'] == $firstname && $row['middlename'] == $middlename && $row['lastname'] == $lastname && $row['suffix'] == $suffix && $row['position'] == $position) {
+						$update = mysqli_query($conn, "UPDATE officials SET firstname='$firstname', middlename='$middlename', lastname='$lastname', suffix='$suffix', position='$position', description='$description' WHERE officialID='$officialID' ");
+						if($update) {
+			            	$_SESSION['message'] = "Barangay Official has been updated!";
+				            $_SESSION['text'] = "Updated successfully!";
+					        $_SESSION['status'] = "success";
+							header("Location: officials.php");
+			            } else {
+				            $_SESSION['message'] = "Something went wrong while updating the information.";
+				            $_SESSION['text'] = "Please try again.";
 					        $_SESSION['status'] = "error";
 							header("Location: officials.php");
-			    		}
-				    }
-					
-			} else {
-				$check = mysqli_query($conn, "SELECT * FROM officials WHERE firstname='$firstname' AND middlename='$middlename' AND lastname='$lastname' AND suffix='$suffix' AND position='$position' ");
-				if(mysqli_num_rows($check)>0) {
-			      $_SESSION['message'] = "This person is already added as an official.";
-			      $_SESSION['text'] = "Please try again.";
-			      $_SESSION['status'] = "error";
-				  header("Location: officials.php");
+			            }
 				} else {
-					// Check if image file is a actual image or fake image
-				    $sign_target_dir = "../images-signature/";
-				    $sign_target_file = $sign_target_dir . basename($_FILES["fileToUpload"]["name"]);
-				    $sign_uploadOk = 1;
-				    $sign_imageFileType = strtolower(pathinfo($sign_target_file,PATHINFO_EXTENSION));
-
-				    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-					if($check == false) {
-					    $_SESSION['message']  = "Official signature file is not an image.";
-					    $_SESSION['text'] = "Please try again.";
-					    $_SESSION['status'] = "error";
-						header("Location: officials.php");
-				    	$uploadOk = 0;
-				    } 
-
-					// Check file size // 500KB max size
-					elseif ($_FILES["fileToUpload"]["size"] > 500000) {
-					  	$_SESSION['message']  = "File must be up to 500KB in size.";
-					    $_SESSION['text'] = "Please try again.";
-					    $_SESSION['status'] = "error";
-						header("Location: officials.php");
-				    	$uploadOk = 0;
-					}
-
-				    // Allow certain file formats
-				    elseif($sign_imageFileType != "jpg" && $sign_imageFileType != "png" && $sign_imageFileType != "jpeg" && $sign_imageFileType != "gif" ) {
-					    $_SESSION['message'] = "Only JPG, JPEG, PNG & GIF files are allowed.";
-					    $_SESSION['text'] = "Please try again.";
-					    $_SESSION['status'] = "error";
-						header("Location: officials.php");
-					    $sign_uploadOk = 0;
-				    }
-
-				    // Check if $sign_uploadOk is set to 0 by an error
-				    elseif ($sign_uploadOk == 0) {
-					    $_SESSION['message'] = "Your file was not uploaded.";
-					    $_SESSION['text'] = "Please try again.";
-					    $_SESSION['status'] = "error";
-						header("Location: officials.php");
-
-				    // if everything is ok, try to upload file
-				    } else {
-
-			    		if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $sign_target_file)) {
-		    				$update = mysqli_query($conn, "UPDATE officials SET firstname='$firstname', middlename='$middlename', lastname='$lastname', suffix='$suffix', position='$position', description='$description', digital_signature='$file' WHERE officialID='$officialID' ");
-							if($update) {
-				            	$_SESSION['message'] = "Barangay Official has been updated!";
-					            $_SESSION['text'] = "Updated successfully!";
-						        $_SESSION['status'] = "success";
-								header("Location: officials.php");
-				            } else {
-					            $_SESSION['message'] = "Something went wrong while updating the information.";
-					            $_SESSION['text'] = "Please try again.";
-						        $_SESSION['status'] = "error";
-								header("Location: officials.php");
-				            }  	
-			    		} else {
-		    				$_SESSION['message'] = "There was an error uploading your digital signature.";
-			            	$_SESSION['text'] = "Please try again.";
+					$check = mysqli_query($conn, "SELECT * FROM officials WHERE firstname='$firstname' AND middlename='$middlename' AND lastname='$lastname' AND suffix='$suffix' AND position='$position' ");
+					if(mysqli_num_rows($check)>0) {
+				      $_SESSION['message'] = "This person is already added as an official.";
+				      $_SESSION['text'] = "Please try again.";
+				      $_SESSION['status'] = "error";
+					  header("Location: officials.php");
+					} else {
+						$update = mysqli_query($conn, "UPDATE officials SET firstname='$firstname', middlename='$middlename', lastname='$lastname', suffix='$suffix', position='$position', description='$description' WHERE officialID='$officialID' ");
+						if($update) {
+			            	$_SESSION['message'] = "Barangay Official has been updated!";
+				            $_SESSION['text'] = "Updated successfully!";
+					        $_SESSION['status'] = "success";
+							header("Location: officials.php");
+			            } else {
+				            $_SESSION['message'] = "Something went wrong while updating the information.";
+				            $_SESSION['text'] = "Please try again.";
 					        $_SESSION['status'] = "error";
 							header("Location: officials.php");
-			    		}
-				    }
+			            }
+					}
+
+				}
+
+			} else {
+
+				if($row['firstname'] == $firstname && $row['middlename'] == $middlename && $row['lastname'] == $lastname && $row['suffix'] == $suffix && $row['position'] == $position) {
+						// Check if image file is a actual image or fake image
+					    $sign_target_dir = "../images-signature/";
+					    $sign_target_file = $sign_target_dir . basename($_FILES["fileToUpload"]["name"]);
+					    $sign_uploadOk = 1;
+					    $sign_imageFileType = strtolower(pathinfo($sign_target_file,PATHINFO_EXTENSION));
+
+					    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+						if($check == false) {
+						    $_SESSION['message']  = "Signature file is not an image.";
+						    $_SESSION['text'] = "Please try again.";
+						    $_SESSION['status'] = "error";
+							header("Location: officials.php");
+					    	$uploadOk = 0;
+					    } 
+
+						// Check file size // 500KB max size
+						elseif ($_FILES["fileToUpload"]["size"] > 500000) {
+						  	$_SESSION['message']  = "File must be up to 500KB in size.";
+						    $_SESSION['text'] = "Please try again.";
+						    $_SESSION['status'] = "error";
+							header("Location: officials.php");
+					    	$uploadOk = 0;
+						}
+
+					    // Allow certain file formats
+					    elseif($sign_imageFileType != "jpg" && $sign_imageFileType != "png" && $sign_imageFileType != "jpeg" && $sign_imageFileType != "gif" ) {
+						    $_SESSION['message'] = "Only JPG, JPEG, PNG & GIF files are allowed.";
+						    $_SESSION['text'] = "Please try again.";
+						    $_SESSION['status'] = "error";
+							header("Location: officials.php");
+						    $sign_uploadOk = 0;
+					    }
+
+					    // Check if $sign_uploadOk is set to 0 by an error
+					    elseif ($sign_uploadOk == 0) {
+						    $_SESSION['message'] = "Your file was not uploaded.";
+						    $_SESSION['text'] = "Please try again.";
+						    $_SESSION['status'] = "error";
+							header("Location: officials.php");
+
+					    // if everything is ok, try to upload file
+					    } else {
+
+				    		if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $sign_target_file)) {
+			    				$update = mysqli_query($conn, "UPDATE officials SET firstname='$firstname', middlename='$middlename', lastname='$lastname', suffix='$suffix', position='$position', description='$description', digital_signature='$file' WHERE officialID='$officialID' ");
+								if($update) {
+					            	$_SESSION['message'] = "Barangay Official has been updated!";
+						            $_SESSION['text'] = "Updated successfully!";
+							        $_SESSION['status'] = "success";
+									header("Location: officials.php");
+					            } else {
+						            $_SESSION['message'] = "Something went wrong while updating the information.";
+						            $_SESSION['text'] = "Please try again.";
+							        $_SESSION['status'] = "error";
+									header("Location: officials.php");
+					            }  	
+				    		} else {
+			    				$_SESSION['message'] = "There was an error uploading your digital signature.";
+				            	$_SESSION['text'] = "Please try again.";
+						        $_SESSION['status'] = "error";
+								header("Location: officials.php");
+				    		}
+					    }
+						
+				} else {
+					$check = mysqli_query($conn, "SELECT * FROM officials WHERE firstname='$firstname' AND middlename='$middlename' AND lastname='$lastname' AND suffix='$suffix' AND position='$position' ");
+					if(mysqli_num_rows($check)>0) {
+				      $_SESSION['message'] = "This person is already added as an official.";
+				      $_SESSION['text'] = "Please try again.";
+				      $_SESSION['status'] = "error";
+					  header("Location: officials.php");
+					} else {
+						// Check if image file is a actual image or fake image
+					    $sign_target_dir = "../images-signature/";
+					    $sign_target_file = $sign_target_dir . basename($_FILES["fileToUpload"]["name"]);
+					    $sign_uploadOk = 1;
+					    $sign_imageFileType = strtolower(pathinfo($sign_target_file,PATHINFO_EXTENSION));
+
+					    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+						if($check == false) {
+						    $_SESSION['message']  = "Official signature file is not an image.";
+						    $_SESSION['text'] = "Please try again.";
+						    $_SESSION['status'] = "error";
+							header("Location: officials.php");
+					    	$uploadOk = 0;
+					    } 
+
+						// Check file size // 500KB max size
+						elseif ($_FILES["fileToUpload"]["size"] > 500000) {
+						  	$_SESSION['message']  = "File must be up to 500KB in size.";
+						    $_SESSION['text'] = "Please try again.";
+						    $_SESSION['status'] = "error";
+							header("Location: officials.php");
+					    	$uploadOk = 0;
+						}
+
+					    // Allow certain file formats
+					    elseif($sign_imageFileType != "jpg" && $sign_imageFileType != "png" && $sign_imageFileType != "jpeg" && $sign_imageFileType != "gif" ) {
+						    $_SESSION['message'] = "Only JPG, JPEG, PNG & GIF files are allowed.";
+						    $_SESSION['text'] = "Please try again.";
+						    $_SESSION['status'] = "error";
+							header("Location: officials.php");
+						    $sign_uploadOk = 0;
+					    }
+
+					    // Check if $sign_uploadOk is set to 0 by an error
+					    elseif ($sign_uploadOk == 0) {
+						    $_SESSION['message'] = "Your file was not uploaded.";
+						    $_SESSION['text'] = "Please try again.";
+						    $_SESSION['status'] = "error";
+							header("Location: officials.php");
+
+					    // if everything is ok, try to upload file
+					    } else {
+
+				    		if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $sign_target_file)) {
+			    				$update = mysqli_query($conn, "UPDATE officials SET firstname='$firstname', middlename='$middlename', lastname='$lastname', suffix='$suffix', position='$position', description='$description', digital_signature='$file' WHERE officialID='$officialID' ");
+								if($update) {
+					            	$_SESSION['message'] = "Barangay Official has been updated!";
+						            $_SESSION['text'] = "Updated successfully!";
+							        $_SESSION['status'] = "success";
+									header("Location: officials.php");
+					            } else {
+						            $_SESSION['message'] = "Something went wrong while updating the information.";
+						            $_SESSION['text'] = "Please try again.";
+							        $_SESSION['status'] = "error";
+									header("Location: officials.php");
+					            }  	
+				    		} else {
+			    				$_SESSION['message'] = "There was an error uploading your digital signature.";
+				            	$_SESSION['text'] = "Please try again.";
+						        $_SESSION['status'] = "error";
+								header("Location: officials.php");
+				    		}
+					    }
+					}
 				}
 			}
 		}
@@ -1288,11 +1297,99 @@ if(isset($_POST['resetPIN'])) {
 
 
 
+// UPDATE BLOTTER - BLOTTER_UPDATE.PHP
+if(isset($_POST['update_blotter'])) {
+	$blotter_Id          = mysqli_real_escape_string($conn, $_POST['blotter_Id']);
+	$c_firstname         = mysqli_real_escape_string($conn, $_POST['c_firstname']);
+	$c_middlename        = mysqli_real_escape_string($conn, $_POST['c_middlename']);
+	$c_lastname          = mysqli_real_escape_string($conn, $_POST['c_lastname']);
+	$c_suffix            = mysqli_real_escape_string($conn, $_POST['c_suffix']);
+	$c_contact           = mysqli_real_escape_string($conn, $_POST['c_contact']);
+	$c_address           = mysqli_real_escape_string($conn, $_POST['c_address']);
+	$incidentDate        = mysqli_real_escape_string($conn, $_POST['incidentDate']);
+	$incidentTime        = mysqli_real_escape_string($conn, $_POST['incidentTime']);
+	$incidentNature      = mysqli_real_escape_string($conn, $_POST['incidentNature']);
+	$incidentAddress     = mysqli_real_escape_string($conn, $_POST['incidentAddress']);
+	$acc_firstname       = mysqli_real_escape_string($conn, $_POST['acc_firstname']);
+	$acc_middlename      = mysqli_real_escape_string($conn, $_POST['acc_middlename']);
+	$acc_lastname        = mysqli_real_escape_string($conn, $_POST['acc_lastname']);
+	$acc_suffix          = mysqli_real_escape_string($conn, $_POST['acc_suffix']);
+	$acc_contact         = mysqli_real_escape_string($conn, $_POST['acc_contact']);
+	$acc_address         = mysqli_real_escape_string($conn, $_POST['acc_address']);
+	$witnesses           = mysqli_real_escape_string($conn, $_POST['witnesses']);
+	$witnessesContact    = mysqli_real_escape_string($conn, $_POST['witnessesContact']);
+	$incidentDescription = mysqli_real_escape_string($conn, $_POST['incidentDescription']);
+	$actionTaken         = mysqli_real_escape_string($conn, $_POST['actionTaken']);
+	
+	$file_name = $_FILES["fileToUpload"]["name"];
+	$location  = "../images-blotter/";
+	$image_name = implode(",",$file_name);
+
+	if(!empty($file_name)) {
+		foreach ($file_name as $key => $val) {
+			$targetPath = $location .$val;
+			move_uploaded_file($_FILES["fileToUpload"]["tmp_name"][$key],$targetPath);
+		}
+	}
+	if(!empty($file_name)) {
+		 $updated = mysqli_query($conn, "UPDATE blotter SET c_firstname='$c_firstname', c_middlename='$c_middlename', c_lastname='$c_lastname', c_suffix='$c_suffix', c_contact='$c_contact', c_address='$c_address', incidentDate='$incidentDate', incidentTime='$incidentTime', incidentNature='$incidentNature', incidentAddress='$incidentAddress', acc_firstname='$acc_firstname', acc_middlename='$acc_middlename', acc_lastname='$acc_lastname', acc_suffix='$acc_suffix', acc_contact='$acc_contact', acc_address='$acc_address', witnesses='$witnesses', witnessesContact='$witnessesContact', incidentDescription='$incidentDescription', actionTaken='$actionTaken', attachments='$image_name' WHERE blotter_Id='$blotter_Id'");
+	
+		  if($updated) {
+		  	$_SESSION['message'] = "Blotter has been updated.";
+		    $_SESSION['text'] = "Updated successfully!";
+		    $_SESSION['status'] = "success";
+			header("Location: blotter_update.php?blotter_Id=".$blotter_Id);
+		  } else {
+		    $_SESSION['message'] = "Something went wrong while updating the information.";
+		    $_SESSION['text'] = "Please try again.";
+		    $_SESSION['status'] = "error";
+			header("Location: blotter_update.php?blotter_Id=".$blotter_Id);
+		  }
+	} else {
+		 $updated = mysqli_query($conn, "UPDATE blotter SET c_firstname='$c_firstname', c_middlename='$c_middlename', c_lastname='$c_lastname', c_suffix='$c_suffix', c_contact='$c_contact', c_address='$c_address', incidentDate='$incidentDate', incidentTime='$incidentTime', incidentNature='$incidentNature', incidentAddress='$incidentAddress', acc_firstname='$acc_firstname', acc_middlename='$acc_middlename', acc_lastname='$acc_lastname', acc_suffix='$acc_suffix', acc_contact='$acc_contact', acc_address='$acc_address', witnesses='$witnesses', witnessesContact='$witnessesContact', incidentDescription='$incidentDescription', actionTaken='$actionTaken' WHERE blotter_Id='$blotter_Id'");
+	
+		  if($updated) {
+		  	$_SESSION['message'] = "Blotter has been updated.";
+		    $_SESSION['text'] = "Updated successfully!";
+		    $_SESSION['status'] = "success";
+			header("Location: blotter_update.php?blotter_Id=".$blotter_Id);
+		  } else {
+		    $_SESSION['message'] = "Something went wrong while updating the information.";
+		    $_SESSION['text'] = "Please try again.";
+		    $_SESSION['status'] = "error";
+			header("Location: blotter_update.php?blotter_Id=".$blotter_Id);
+		  }
+	}
+
+	
+}
 
 
 
 
 
+
+// UPDATE BLOTTER - BLOTTER_UPDATE.PHP
+if(isset($_POST['update_blotter_status'])) {
+	$blotter_Id          = mysqli_real_escape_string($conn, $_POST['blotter_Id']);
+	$blotter_status         = mysqli_real_escape_string($conn, $_POST['blotter_status']);
+	
+	$updated = mysqli_query($conn, "UPDATE blotter SET blotter_status='$blotter_status' WHERE blotter_Id='$blotter_Id'");
+	
+	  if($updated) {
+	  	$_SESSION['message'] = "Blotter status has been updated.";
+	    $_SESSION['text'] = "Updated successfully!";
+	    $_SESSION['status'] = "success";
+		header("Location: blotter.php");
+	  } else {
+	    $_SESSION['message'] = "Something went wrong while updating the information.";
+	    $_SESSION['text'] = "Please try again.";
+	    $_SESSION['status'] = "error";
+		header("Location: blotter.php");
+	  }
+
+	
+}
 
 
 ?>

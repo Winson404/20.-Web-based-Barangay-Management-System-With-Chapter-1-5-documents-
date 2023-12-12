@@ -130,6 +130,48 @@ if(isset($_GET['export'])) {
 
 
 
+  } elseif($export == 'blotter') {
+
+        $blotter = [
+          ['No.', 'Complainant', 'Complainant contact', 'Complainant address', 'Incident Datetime', 'Incident Nature', 'Incident Address', 'Accused/Subject Person', 'Accused Contact', 'Accused Address', 'Witnesses', 'Witnesses Contact', 'Incident Description', 'Action Taken', 'Blotter Status', 'Date reported']
+        ];
+
+        $id = 0;
+        $sql = "SELECT * FROM blotter ORDER BY date_added DESC";
+        $res = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($res) > 0) {
+          foreach ($res as $row) {
+            $status = '';
+            if($row['blotter_status'] == 0) {
+              $status = 'Open';
+            } elseif($row['blotter_status'] == 1) {
+              $status = 'Closed';
+            } else {
+              $status = 'Under Investigation';
+            }
+            $id++;
+            $complainant = ucwords($row['c_lastname']. ' ' .$row['c_suffix']. ', ' .$row['c_firstname']. ' ' .$row['c_middlename']);
+            $accused = ucwords($row['acc_lastname']. ' ' .$row['acc_suffix']. ', ' .$row['acc_firstname']. ' ' .$row['acc_middlename']);
+            
+            $blotter = array_merge($blotter, array(array($id, $complainant, '+63 '.$row['c_contact'], ucwords($row['c_address']), date("F d, Y", strtotime($row['incidentDate'])).' '.$row['incidentTime'], ucwords($row['incidentNature']), ucwords($row['incidentAddress']), $accused, '+63 '.$row['c_contact'], ucwords($row['acc_address']), ucwords($row['witnesses']), '+63 '.$row['witnessesContact'], ucwords($row['incidentDescription']), $row['actionTaken'], $status, date("F d, Y h:i:s A", strtotime($row['date_added'])) )));
+          }
+        } else {
+          $_SESSION['message'] = "No record found in the database.";
+          $_SESSION['text'] = "Please try again.";
+          $_SESSION['status'] = "error";
+          header("Location: blotter.php");
+        }
+
+        $xlsx = SimpleXLSXGen::fromArray($blotter);
+        $xlsx->downloadAs('Blotter records.xlsx'); // This will download the file to your local system
+
+
+        // $xlsx->saveAs('officials.xlsx'); // This will save the file to your server
+        echo "<pre>";
+        header('Location: blotter.php');
+
+
+
   } else {
 
   }

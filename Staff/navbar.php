@@ -341,10 +341,24 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
           <li class="nav-item">
-            <a href="resident.php" class="nav-link"> <i class="fa-solid fa-user-group"></i><p>&nbsp; Residence</p></a>
+            <a href="resident.php" class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'resident.php' || basename($_SERVER['PHP_SELF']) == 'resident_add.php' || basename($_SERVER['PHP_SELF']) == 'resident_update.php' || basename($_SERVER['PHP_SELF']) == 'resident_view.php' || basename($_SERVER['PHP_SELF']) == 'resident_document.php') ? 'active' : ''; ?>"> <i class="fa-solid fa-user-group"></i><p>&nbsp; Residence</p></a>
           </li>
           <li class="nav-item">
-            <a href="documents.php" class="nav-link"><i class="fa-solid fa-file"></i><p>&nbsp;&nbsp;&nbsp;  Documents</p></a>
+            <a href="documents.php" class="nav-link 
+            <?php echo (
+              basename($_SERVER['PHP_SELF']) == 'documents.php' || 
+              basename($_SERVER['PHP_SELF']) == 'documents_requirements.php' || 
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyClearance.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyConstruction.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyID.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyIndigency.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyJobseeker.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyNon-Residency.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyOwnership.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyPermit.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyPlate.php' ||
+              basename($_SERVER['PHP_SELF']) == 'cert_brgyResidency.php'
+              ) ? 'active' : ''; ?>"><i class="fa-solid fa-file"></i><p>&nbsp;&nbsp;&nbsp;  Documents</p></a>
           </li>
 
         </ul>

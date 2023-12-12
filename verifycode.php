@@ -59,7 +59,8 @@
             $mail->Port = 465;                                   
 
             //Send Email
-            $mail->setFrom('info.shstudent@gmail.com');
+            $mail->setFrom('info.shstudent@gmail.com', 'Barangay System no-reply');
+            
 
             //Recipients
             $mail->addAddress($email);              

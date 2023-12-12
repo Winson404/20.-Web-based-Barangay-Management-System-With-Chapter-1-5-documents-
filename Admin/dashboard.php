@@ -1,19 +1,6 @@
 <title>BMS | Dashboard</title>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-<?php 
-  
-  include 'navbar.php'; 
-  $query = mysqli_query($conn, "SELECT *, COUNT(residenceId) as countId,  YEAR(date_registered) AS year FROM residence GROUP BY YEAR(date_registered)");
-  $chart_data = '';
-  while($row = mysqli_fetch_array($query)) {
-    $chart_data .= "{ Year:'".$row["year"]."', Population:".$row["countId"]."}, ";
-  }
-  $chart_data = substr($chart_data, 0, -2);
+<?php include 'navbar.php'; ?>
 
-?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -36,95 +23,127 @@
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid card">
-        
-        <div class="row d-flex justify-content-center ">
-          
-          <div class="col-md-5 mt-4 bg-light">
-            <div class="card-header text-center mt-4 " style="min-height: 200px; max-height: 200px; max-width: 100%;">
-                <?php
-                  $users = mysqli_query($conn, "SELECT residenceId from residence");
-                  $row_users = mysqli_num_rows($users);
-                ?>
-                <h1 class="mt-5" style="font-size: 70px"><?php echo $row_users; ?></h1>
-                <!-- <p class="mb-5">Total Population</p> -->
-            </div>
-            <div class="card-footer bg-transparent">
-              <h5 class="text-center">Total population</h5>
-            </div>
-          </div>
+      <div class="container-fluid">
+        <div class="row">
 
-          <div class="col-md-5 mt-4">
-            <div class="card-header bg-light">
-              <div id="chart" style="min-height: 200px; max-height: 200px; max-width: 100%;"></div>
-            </div>
-            <div class="card-footer">
-              <h5 class="text-center text-dark">Population by year</h5>
+          <div class="col-md-6">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Population</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool pt-3" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button> -->
+                </div>
+              </div>
+              <div class="card-body">
+                <canvas id="population" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              </div>
             </div>
           </div>
 
-          <div class="col-md-4 mt-4">
-            <a href="detailedPopulation.php">
+          <div class="col-md-6">
+            <div class="card card-danger">
               <div class="card-header">
-                <canvas id="population" style="min-height: 200px; max-height: 200px; max-width: 100%;"></canvas>
+                <h3 class="card-title">Age</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool pt-3" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
               </div>
-              <div class="card-footer">
-                <h5 class="text-center text-dark">Population</h5>
+              <div class="card-body">
+                <canvas id="age" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
               </div>
-            </a>
-          </div>
-          
-          <div class="col-md-4 mt-4">
-              <div class="card-header">
-                <canvas id="age" style="min-height: 200px; max-height: 200px; max-width: 100%;"></canvas>
-              </div>
-              <div class="card-footer">
-                <h5 class="text-center">Age</h5>
-              </div>
+            </div>
           </div>
 
-          <div class="col-md-4 mt-4">
+          <div class="col-md-6">
+            <div class="card card-success">
               <div class="card-header">
-                <canvas id="sector" style="min-height: 200px; max-height: 200px; max-width: 100%;"></canvas>
+                <h3 class="card-title">Sector</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool pt-3" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
               </div>
-              <div class="card-footer">
-                <h5 class="text-center">Sector</h5>
+              <div class="card-body">
+                <canvas id="sector" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
               </div>
+            </div>
           </div>
 
-          <div class="col-md-4 mt-4">
+          <div class="col-md-6">
+            <div class="card card-warning">
               <div class="card-header">
-                <canvas id="civilstatus" style="min-height: 200px; max-height: 200px; max-width: 100%;"></canvas>
+                <h3 class="card-title">Civil Status</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool pt-3" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
               </div>
-              <div class="card-footer">
-                <h5 class="text-center">Civil Status</h5>
+              <div class="card-body">
+                <canvas id="civilstatus" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
               </div>
+            </div>
           </div>
 
-          <div class="col-md-4 mt-4">
+          <div class="col-md-6">
+            <div class="card card-primary">
               <div class="card-header">
-                <canvas id="voters" style="min-height: 200px; max-height: 200px; max-width: 100%;"></canvas>
+                <h3 class="card-title">Voters</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool pt-3" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
               </div>
-              <div class="card-footer">
-                <h5 class="text-center">Voters Status</h5>
+              <div class="card-body">
+                <canvas id="voters" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
               </div>
+            </div>
           </div>
 
-          <div class="col-md-4 mt-4">
+          <div class="col-md-6">
+            <div class="card card-danger">
               <div class="card-header">
-                <canvas id="IDstatus" style="min-height: 200px; max-height: 200px; max-width: 100%;"></canvas>
+                <h3 class="card-title">Religion</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool pt-3" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
               </div>
-              <div class="card-footer">
-                <h5 class="text-center">ID Status</h5>
+              <div class="card-body">
+                <canvas id="religion" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
               </div>
+            </div>
           </div>
 
+          <div class="col-md-6">
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Blotter</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool pt-3" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <canvas id="blotter" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              </div>
+            </div>
+          </div>
 
-        </div>
-          
-        <div class="row">  
-          <div class="col-md-12 mt-4 mb-2">
-            <h3 class="m-0">Activity</h3>
+         
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+              <h1 class="m-0">Activity</h1>
           </div>
           <div class="col-md-12" id="activity">
             <div class="card card-info">
@@ -138,50 +157,73 @@
               </div>
               <div class="card-body">
                   <table id="examplse1" class="table table-bordered table-hover text-sm">
-                    <thead>
-                    <tr class="bg-light">
-                      <th width="15%">DATE</th>
-                      <th width="65%">TYPE OF ACTIVTY</th>
-                      <th width="20%">ACTIONS</th>
+                  <thead>
+                  <tr class="bg-light">
+                    <th width="15%">DATE</th>
+                    <th width="65%">TYPE OF ACTIVTY</th>
+                    <th width="20%">ACTIONS</th>
+                  </tr>
+                  </thead>
+                  <tbody id="users_data">
+                    <?php 
+                        $sql = mysqli_query($conn, "SELECT * FROM activity WHERE actDate >= '$date_today' ORDER BY actDate");
+                        if(mysqli_num_rows($sql) > 0 ) {
+                        while ($row = mysqli_fetch_array($sql)) {
+                      ?>
+                    <tr>
+                        <?php if($row['actDate'] == $date_today): ?>
+                          <td class="bg-white text-bold"><?php echo $row['actDate']; ?></td>
+                          <td class="bg-white text-justify text-bold"><?php echo $row['actName']; ?></td>
+                          <td class="bg-white">
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#update<?php echo $row['actId']; ?>"><i class="fas fa-pencil-alt"></i> Edit</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete<?php echo $row['actId']; ?>"><i class="fas fa-trash"></i> Delete</button>
+                          </td>
+                        <?php else: ?>
+                          <td class="bg-grey text-muted"><?php echo $row['actDate']; ?></td>
+                          <td class="bg-grey text-muted text-justify"><?php echo $row['actName']; ?></td>
+                          <td class="bg-grey text-muted">
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#update<?php echo $row['actId']; ?>"><i class="fas fa-pencil-alt"></i> Edit</button>
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete<?php echo $row['actId']; ?>"><i class="fas fa-trash"></i> Delete</button>
+                          </td>
+                        <?php endif; ?>
+                          
                     </tr>
-                    </thead>
-                    <tbody id="users_data">
-                      <?php 
-                          $sql = mysqli_query($conn, "SELECT * FROM activity WHERE actDate >= '$date_today' ORDER BY actDate");
-                          if(mysqli_num_rows($sql) > 0 ) {
-                          while ($row = mysqli_fetch_array($sql)) {
-                        ?>
-                      <tr>
-                          <?php if($row['actDate'] == $date_today): ?>
-                            <td class="bg-white text-bold"><?php echo $row['actDate']; ?></td>
-                            <td class="bg-white text-justify text-bold"><?php echo $row['actName']; ?></td>
-                            <td class="bg-white">
-                              <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#update<?php echo $row['actId']; ?>"><i class="fas fa-pencil-alt"></i> Edit</button>
-                              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete<?php echo $row['actId']; ?>"><i class="fas fa-trash"></i> Delete</button>
-                            </td>
-                          <?php else: ?>
-                            <td class="bg-grey text-muted"><?php echo $row['actDate']; ?></td>
-                            <td class="bg-grey text-muted text-justify"><?php echo $row['actName']; ?></td>
-                            <td class="bg-grey text-muted">
-                              <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#update<?php echo $row['actId']; ?>"><i class="fas fa-pencil-alt"></i> Edit</button>
-                              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete<?php echo $row['actId']; ?>"><i class="fas fa-trash"></i> Delete</button>
-                            </td>
-                          <?php endif; ?>
-                            
+                    <?php include 'activity_update_delete.php'; } } else { ?>
+                        <td colspan="100%" class="text-center">No activity found</td>
                       </tr>
-                      <?php include 'activity_update_delete.php'; } } else { ?>
-                          <td colspan="100%" class="text-center">No activity found</td>
-                        </tr>
-                      <?php } ?>
-                    </tbody>
-                  </table>
+                    <?php } ?>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
+
         </div>
+
       </div>
     </section>
-</div>
+    
+  </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 <?php 
     include 'activity_add.php';
@@ -197,17 +239,6 @@
     // }
 ?>
 
- <script>
-    Morris.Bar({
-     element : 'chart',
-     data:[<?php echo $chart_data; ?>],
-     xkey:'Year',
-     ykeys:['Population'],
-     labels:['Population'],
-     hideHover:'auto',
-     stacked:true
-    });
-</script>
 
 <script>
   $(function () {
@@ -427,23 +458,68 @@
 
 
 
-    // AGE *****************************
-    var donutChartCanvas = $('#IDstatus').get(0).getContext('2d')
+    // RELIGION *****************************
+    var donutChartCanvas = $('#religion').get(0).getContext('2d')
     var donutData        = {
 
-    labels: [ 'Active', 'Non',],
+    labels: [ 'Roman Catholic', 'INC', 'Evangelical Christianity', 'Islam', 'Protestants', 'SDA', 'Aglipayan', 'BBC', 'UCCP', "Jehovah's Witnesses", 'Buddhist', 'Methodist', 'Hindu', 'Judaism', 'Ang Dating Daan', 'Other Religion',],
      <?php 
-            $sql = mysqli_query($conn, "SELECT count(residenceId) AS active FROM residence WHERE ID_status='Active' ");
+            $sql = mysqli_query($conn, "SELECT count(residenceId) AS rc FROM residence WHERE religion='Roman Catholic' ");
             $row = mysqli_fetch_array($sql);
 
-            $sql2 = mysqli_query($conn, "SELECT count(residenceId) AS none FROM residence WHERE ID_status='None' ");
+            $sql2 = mysqli_query($conn, "SELECT count(residenceId) AS inc FROM residence WHERE religion='Iglesia Ni Cristo' ");
             $row2 = mysqli_fetch_array($sql2);
 
+            $sql3 = mysqli_query($conn, "SELECT count(residenceId) AS Evangelical FROM residence WHERE religion='Evangelical Christianity' ");
+            $row3 = mysqli_fetch_array($sql3);
+
+            $sql4 = mysqli_query($conn, "SELECT count(residenceId) AS Islam FROM residence WHERE religion='Islam' ");
+            $row4 = mysqli_fetch_array($sql4);
+
+            $sql5 = mysqli_query($conn, "SELECT count(residenceId) AS Protestants FROM residence WHERE religion='Protestants' ");
+            $row5 = mysqli_fetch_array($sql5);
+
+            $sql6 = mysqli_query($conn, "SELECT count(residenceId) AS SDA FROM residence WHERE religion='Seventh-day Adventism' ");
+            $row6 = mysqli_fetch_array($sql6);
+
+            $sql7 = mysqli_query($conn, "SELECT count(residenceId) AS Aglipayan FROM residence WHERE religion='Aglipayan' ");
+            $row7 = mysqli_fetch_array($sql7);
+
+            $sql8 = mysqli_query($conn, "SELECT count(residenceId) AS BBC FROM residence WHERE religion='Bible Baptist Church' ");
+            $row8 = mysqli_fetch_array($sql8);
+
+            $sql9 = mysqli_query($conn, "SELECT count(residenceId) AS UCCP FROM residence WHERE religion='United Church of Christ in the Philippines' ");
+            $row9 = mysqli_fetch_array($sql9);
+
+
+
+            $sql10 = mysqli_query($conn, "SELECT count(residenceId) AS Witnesses FROM residence WHERE religion='Protestants' ");
+            $row10 = mysqli_fetch_array($sql10);
+
+
+
+            $sql11 = mysqli_query($conn, "SELECT count(residenceId) AS Buddhist FROM residence WHERE religion='Buddhist' ");
+            $row11 = mysqli_fetch_array($sql11);
+
+            $sql12 = mysqli_query($conn, "SELECT count(residenceId) AS Methodist FROM residence WHERE religion='Methodist' ");
+            $row12 = mysqli_fetch_array($sql12);
+
+            $sql13 = mysqli_query($conn, "SELECT count(residenceId) AS Hindu FROM residence WHERE religion='Hindu' ");
+            $row13 = mysqli_fetch_array($sql13);
+
+            $sql14 = mysqli_query($conn, "SELECT count(residenceId) AS Judaism FROM residence WHERE religion='Judaism' ");
+            $row14 = mysqli_fetch_array($sql14);
+
+            $sql15 = mysqli_query($conn, "SELECT count(residenceId) AS Daan FROM residence WHERE religion='Ang Dating Daan' ");
+            $row15 = mysqli_fetch_array($sql15);
+
+            $sql16 = mysqli_query($conn, "SELECT count(residenceId) AS Other FROM residence WHERE religion='Other Religion' ");
+            $row16 = mysqli_fetch_array($sql16);
 
       echo " datasets: [ 
               { 
-                data: [".$row['active'].", ".$row2['none']."], 
-                backgroundColor : ['#f56954', '#00a65a'],
+                data: [".$row['rc'].", ".$row2['inc'].", ".$row3['Evangelical'].", ".$row4['Islam'].", ".$row5['Protestants'].", ".$row6['SDA'].", ".$row7['Aglipayan'].", ".$row8['BBC'].", ".$row9['UCCP'].", ".$row10['Witnesses'].", ".$row11['Buddhist'].", ".$row12['Methodist'].", ".$row13['Hindu'].", ".$row14['Judaism'].", ".$row15['Daan'].", ".$row16['Other']."], 
+                backgroundColor : ['#f56954', '#00a65a', '#4d3900', '#00c0ef', '#001a00', '#732626', '#00ff00', '#00a65k', '#4d004d', '#00c3ef', '#3c8cbd', '#d2d6cf', '#f56962', '#00a30a', '#f39c34', '#00c0tg'],
               } 
              ] ";
       ?>
@@ -465,8 +541,36 @@
 
 
 
+    // BLOTTER *****************************
+    var donutChartCanvas = $('#blotter').get(0).getContext('2d')
+    var donutData        = {
 
+    labels: [ 'Blotter',],
+     <?php 
+            $sql = mysqli_query($conn, "SELECT count(blotter_Id) AS b_Id FROM blotter ");
+            $row = mysqli_fetch_array($sql);
 
+      echo " datasets: [ 
+              { 
+                data: [".$row['b_Id']."], 
+                backgroundColor : ['#f56954'],
+              } 
+             ] ";
+      ?>
+    }
+
+    var donutOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    new Chart(donutChartCanvas, {
+      type: 'doughnut',
+      // type: 'pie',
+      data: donutData,
+      options: donutOptions
+    })
 
 
 
