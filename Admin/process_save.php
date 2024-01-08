@@ -541,7 +541,7 @@
 		$file            = basename($_FILES["fileToUpload"]["name"]);
 		$date_registered = date('Y-m-d');
 
-		$cap = mysqli_query($conn, "SELECT * FROM officials WHERE position='Barangay Captain'");
+		$cap = mysqli_query($conn, "SELECT * FROM officials WHERE position='Barangay Captain' && position='$position'");
 		if(mysqli_num_rows($cap) > 0) {
 		  $_SESSION['message'] = "Barangay Captain position already exists.";
 	      $_SESSION['text'] = "Please try again.";
